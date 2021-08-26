@@ -12,14 +12,12 @@ describe('Drawing on the canvas', () => {
     cy.get('.pageDiv').snapshot('initial visit');
   });
 
-  it('should log a click to the console', () => {
-    cy.visit('/', {
-      onBeforeLoad(win) {
-        cy.stub(win.console, 'log').as('consoleLog')
-      }
-    });
+  it('should draw a line', () => {
+    cy.visit('/');
 
-    cy.get('[data-cy=theCanvas]').click(42, 41);
-    cy.get('@consoleLog').should('be.calledWith', {x: 42, y: 42});
+    cy.get('[data-cy=theCanvas]')
+      .click(42, 41)
+      .click(183, 571)
+      .matchImageSnapshot('drew_a_line');
   })
 });

@@ -7,20 +7,39 @@ type Coordinate = {
   y: number;
 }
 
+function getCanvasLocation(canvas: HTMLCanvasElement, event: MouseEvent): Coordinate {
+  return { x: event.pageX - canvas.offsetLeft, y: event.pageY - canvas.offsetTop };
+}
+
+function drawLine(canvas: HTMLCanvasElement, startPosition: Coordinate, stopPosition: Coordinate) {
+  const context = canvas.getContext('2d');
+  if (context) {
+    context.beginPath();
+    context.moveTo(startPosition.x, startPosition.y);
+    context.lineTo(stopPosition.x, stopPosition.y);
+    context.closePath();
+
+    context.stroke();
+  }
+};
+
 function DrawingCanvas() {
   const ref = React.useRef<HTMLCanvasElement>(null);
-
-  function getCanvasLocation(event: MouseEvent, canvas: HTMLCanvasElement): Coordinate {
-    return { x: event.pageX - canvas.offsetLeft, y: event.pageY - canvas.offsetTop };
-  }
+  const [startPosition, setStartPosition] = React.useState<Coordinate | null>(null);
 
   const onClick = React.useCallback((event: MouseEvent) => {
     if (!ref.current) {
       return;
     }
 
-    console.log(getCanvasLocation(event, ref.current));
-  }, []);
+    const clickLocation = getCanvasLocation(ref.current, event);
+    if (!startPosition) {
+      setStartPosition(clickLocation);
+    } else {
+      drawLine(ref.current, startPosition, clickLocation);
+      setStartPosition(null);
+    }
+  }, [startPosition]);
 
   React.useEffect(() => {
     if (!ref.current) {
