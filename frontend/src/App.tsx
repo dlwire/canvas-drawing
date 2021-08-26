@@ -1,25 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Header } from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css'
-import './app.css'
+import React from 'react';
+import { Container, Header } from 'semantic-ui-react';
 
-import { fetchContent } from './api';
+import './app.css';
+
+import { DrawingCanvas } from './DrawingCanvas';
 
 function App() {
-  const [content, setContent] = useState('');
-
-  useEffect(() => {
-    fetchContent()
-      .then(setContent);
-  }, []);
-
   return (
     <div className="pageDiv">
       <Container>
-        <Header>{content}</Header>
+        <Header>Cleerly Coding Challenge</Header>
+        <DrawingCanvas />
       </Container>
     </div>
-  )
+  );
 }
 
-export default App;
+export { App }

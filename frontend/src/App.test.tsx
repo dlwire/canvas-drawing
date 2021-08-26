@@ -1,15 +1,10 @@
-import React from 'react';
+import * as React from 'react';
 import { render, screen } from '@testing-library/react';
-import App from './App';
-import { fetchContent } from './api';
-
-jest.mock('./api.ts');
+import { App } from './App';
 
 test('renders learn react link', async () => {
-  (fetchContent as jest.Mock).mockResolvedValue('Hello world');
+  render(<App />)
 
-  render(<App />);
-
-  const result = await screen.findByText(/Hello world/);
+  const result = await screen.findByText(/Cleerly Coding Challenge/);
   expect(result).toBeInTheDocument();
 });
