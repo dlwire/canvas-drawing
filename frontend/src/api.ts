@@ -1,11 +1,4 @@
-export type Coordinate = {
-  x: number;
-  y: number;
-}
-
-export type Shape = {
-  coordinates: Coordinate[]
-}
+import { Shape } from './types';
 
 export function sendGetShapes(): Promise<Shape[]> {
   return fetch(
@@ -25,5 +18,17 @@ export function sendClear(): Promise<void> {
       method: "POST",
     }
   ).then(() => {})
-  .catch(error => console.error(error))
+  .catch(error => console.error(error));
+}
+
+export function sendAddShape(shape: Shape): Promise<void> {
+  return fetch(
+    'http://localhost:5000/add-shape',
+    {
+      method: "POST",
+      mode: 'no-cors',
+      body: JSON.stringify(shape)
+    }
+  ).then(() => {})
+  .catch(error => console.error(error));
 }

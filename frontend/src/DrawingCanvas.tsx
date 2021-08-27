@@ -1,23 +1,9 @@
 import React from 'react';
-import { sendClear, sendGetShapes, Shape, Coordinate } from './api';
+import { sendAddShape, sendClear, sendGetShapes } from './api';
+import { Coordinate, Shape } from './types';
+import { throttle, drawLine, getCanvasLocation } from './utils';
 
 import './drawingCanvas.css'
-
-function getCanvasLocation(canvas: HTMLCanvasElement, event: MouseEvent): Coordinate {
-  return { x: event.pageX - canvas.offsetLeft, y: event.pageY - canvas.offsetTop };
-}
-
-function drawLine(canvas: HTMLCanvasElement, startPosition: Coordinate, stopPosition: Coordinate) {
-  const context = canvas.getContext('2d');
-  if (context) {
-    context.beginPath();
-    context.moveTo(startPosition.x, startPosition.y);
-    context.lineTo(stopPosition.x, stopPosition.y);
-    context.closePath();
-
-    context.stroke();
-  }
-};
 
 function DrawingCanvas() {
   const ref = React.useRef<HTMLCanvasElement>(null);
@@ -34,6 +20,7 @@ function DrawingCanvas() {
     } else {
       drawLine(ref.current, startPosition, clickLocation);
       setStartPosition(null);
+      sendAddShape({ coordinates: [startPosition, clickLocation]});
     }
   }, [startPosition]);
 
@@ -61,7 +48,7 @@ function DrawingCanvas() {
         });
       });
     }
-  });
+  }, []);
 
   React.useEffect(() => {
     if (!ref.current) {
@@ -69,9 +56,10 @@ function DrawingCanvas() {
     }
 
     const canvas: HTMLCanvasElement = ref.current;
-    canvas.addEventListener('mousedown', onClick);
+    const throttledOnClick = throttle(onClick);
+    canvas.addEventListener('mousedown', throttledOnClick);
     return () => {
-      canvas.removeEventListener('mousedown', onClick);
+      canvas.removeEventListener('mousedown', throttledOnClick);
     };
   }, [onClick]);
 
