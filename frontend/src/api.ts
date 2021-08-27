@@ -7,7 +7,7 @@ export type Shape = {
   coordinates: Coordinate[]
 }
 
-export function loadShapes(): Promise<Shape[]> {
+export function sendGetShapes(): Promise<Shape[]> {
   return fetch(
     `http://localhost:5000/get-shapes`,
     {
@@ -15,5 +15,15 @@ export function loadShapes(): Promise<Shape[]> {
     }
   ).then(res => res.json())
   .then(({ shapes }) => shapes)
-  .catch(error => console.log(error));
+  .catch(error => console.error(error));
+}
+
+export function sendClear(): Promise<void> {
+  return fetch(
+    'http://localhost:5000/clear',
+    {
+      method: "POST",
+    }
+  ).then(() => {})
+  .catch(error => console.error(error))
 }

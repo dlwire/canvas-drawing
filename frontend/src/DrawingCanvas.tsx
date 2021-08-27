@@ -1,5 +1,5 @@
 import React from 'react';
-import { loadShapes, Shape, Coordinate } from './api';
+import { sendClear, sendGetShapes, Shape, Coordinate } from './api';
 
 import './drawingCanvas.css'
 
@@ -38,22 +38,24 @@ function DrawingCanvas() {
   }, [startPosition]);
 
   const clear = React.useCallback(() => {
-    if (!ref.current) {
-      return;
-    }
+    sendClear().then(() => {
+      if (!ref.current) {
+        return;
+      }
 
-    const canvas: HTMLCanvasElement = ref.current;
-    const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
-    if (context) {
-      context.clearRect(0, 0, canvas.width, canvas.height);
-    }
+      const canvas: HTMLCanvasElement = ref.current;
+      const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
+      if (context) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    });
   }, []);
 
   React.useEffect(() => {
     const canvas = ref.current;
 
     if (canvas) {
-      loadShapes().then((shapes: Shape[]) => {
+      sendGetShapes().then((shapes: Shape[]) => {
         shapes.forEach((shape: Shape) => {
           drawLine(canvas, shape.coordinates[0], shape.coordinates[1]);
         });

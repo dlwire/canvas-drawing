@@ -39,7 +39,7 @@ describe('Drawing on the canvas', () => {
       .click(183, 571);
 
     cy.get('[data-cy=clearButton]')
-      .click()
+      .click();
 
     cy.get('[data-cy=theCanvas]')
       .matchImageSnapshot('clear_the_canvas');
