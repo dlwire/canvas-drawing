@@ -22,7 +22,8 @@ describe('Drawing on the canvas', () => {
 
   it('the canvas should be empty initially', () => {
     cy.get('.pageDiv')
-      .snapshot('initial visit');
+      .snapshot('initial visit')
+      .matchImageSnapshot('initial_visit');
   });
 
   it('should draw a line', () => {
