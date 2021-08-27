@@ -1,12 +1,7 @@
 import React from 'react';
-import { Button, Grid } from 'semantic-ui-react';
+import { loadShapes, Shape, Coordinate } from './api';
 
 import './drawingCanvas.css'
-
-type Coordinate = {
-  x: number;
-  y: number;
-}
 
 function getCanvasLocation(canvas: HTMLCanvasElement, event: MouseEvent): Coordinate {
   return { x: event.pageX - canvas.offsetLeft, y: event.pageY - canvas.offsetTop };
@@ -55,6 +50,18 @@ function DrawingCanvas() {
   }, []);
 
   React.useEffect(() => {
+    const canvas = ref.current;
+
+    if (canvas) {
+      loadShapes().then((shapes: Shape[]) => {
+        shapes.forEach((shape: Shape) => {
+          drawLine(canvas, shape.coordinates[0], shape.coordinates[1]);
+        });
+      });
+    }
+  });
+
+  React.useEffect(() => {
     if (!ref.current) {
       return;
     }
@@ -74,7 +81,7 @@ function DrawingCanvas() {
         </canvas>
       </div>
       <div>
-        <Button data-cy="clearButton" onClick={clear}>Clear</Button>
+        <button data-cy="clearButton" onClick={clear}>Clear</button>
       </div>
     </React.Fragment>
   )
