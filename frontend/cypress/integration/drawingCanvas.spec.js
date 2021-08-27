@@ -19,5 +19,18 @@ describe('Drawing on the canvas', () => {
       .click(42, 41)
       .click(183, 571)
       .matchImageSnapshot('drew_a_line');
-  })
+  });
+
+  it('should clear the canvas', () => {
+    cy.visit('/');
+
+    cy.get('[data-cy=theCanvas]')
+      .click(42, 41)
+      .click(183, 571);
+    cy.get('[data-cy=clearButton]')
+      .click()
+
+    cy.get('[data-cy=theCanvas]')
+      .matchImageSnapshot('clear_the_canvas');
+  });
 });

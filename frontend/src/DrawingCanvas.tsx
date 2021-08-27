@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Grid } from 'semantic-ui-react';
 
 import './drawingCanvas.css'
 
@@ -41,6 +42,18 @@ function DrawingCanvas() {
     }
   }, [startPosition]);
 
+  const clear = React.useCallback(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    const canvas: HTMLCanvasElement = ref.current;
+    const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
+    if (context) {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }, []);
+
   React.useEffect(() => {
     if (!ref.current) {
       return;
@@ -53,11 +66,17 @@ function DrawingCanvas() {
     };
   }, [onClick]);
 
-
   return (
-    <canvas ref={ref} className="drawingCanvas" id="drawingCanvas" data-cy="theCanvas" width={800} height={600}>
-      <p>Please update to a browser which supports html5 canvas objects.</p>
-    </canvas>
+    <React.Fragment>
+      <div>
+        <canvas ref={ref} className="drawingCanvas" id="drawingCanvas" data-cy="theCanvas" width={800} height={600}>
+          <p>Please update to a browser which supports html5 canvas objects.</p>
+        </canvas>
+      </div>
+      <div>
+        <Button data-cy="clearButton" onClick={clear}>Clear</Button>
+      </div>
+    </React.Fragment>
   )
 }
 
