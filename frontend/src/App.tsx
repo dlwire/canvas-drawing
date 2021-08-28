@@ -1,5 +1,4 @@
 import React from 'react';
-import { Container, Header } from 'semantic-ui-react';
 
 import './app.css';
 
@@ -8,10 +7,8 @@ import { DrawingCanvas } from './DrawingCanvas';
 function App() {
   return (
     <div className="pageDiv">
-      <Container>
-        <Header>Cleerly Coding Challenge</Header>
+        <h1>Cleerly Coding Challenge</h1>
         <DrawingCanvas />
-      </Container>
     </div>
   );
 }

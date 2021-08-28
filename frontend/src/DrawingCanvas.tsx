@@ -1,13 +1,14 @@
 import React from 'react';
 import { sendAddShape, sendClear, sendGetShapes } from './api';
 import { Coordinate, Shape } from './types';
-import { throttle, drawLine, getCanvasLocation } from './utils';
+import { DRAWERS, getCanvasLocation, throttle } from './utils';
 
 import './drawingCanvas.css'
 
 function DrawingCanvas() {
   const ref = React.useRef<HTMLCanvasElement>(null);
   const [startPosition, setStartPosition] = React.useState<Coordinate | null>(null);
+  const [drawingShape, setDrawingShape] = React.useState<string>('line');
 
   const onClick = React.useCallback((event: MouseEvent) => {
     if (!ref.current) {
@@ -18,11 +19,11 @@ function DrawingCanvas() {
     if (!startPosition) {
       setStartPosition(clickLocation);
     } else {
-      drawLine(ref.current, startPosition, clickLocation);
+      DRAWERS[drawingShape](ref.current, startPosition, clickLocation);
       setStartPosition(null);
       sendAddShape({ coordinates: [startPosition, clickLocation]});
     }
-  }, [startPosition]);
+  }, [drawingShape, startPosition]);
 
   const clear = React.useCallback(() => {
     sendClear().then(() => {
@@ -44,7 +45,7 @@ function DrawingCanvas() {
     if (canvas) {
       sendGetShapes().then((shapes: Shape[]) => {
         shapes.forEach((shape: Shape) => {
-          drawLine(canvas, shape.coordinates[0], shape.coordinates[1]);
+          DRAWERS['line'](canvas, shape.coordinates[0], shape.coordinates[1]);
         });
       });
     }
@@ -70,8 +71,11 @@ function DrawingCanvas() {
           <p>Please update to a browser which supports html5 canvas objects.</p>
         </canvas>
       </div>
-      <div>
-        <button data-cy="clearButton" onClick={clear}>Clear</button>
+      <div className="actions">
+        <div className="buttonGroup">
+          <button className="button" data-cy="clearButton" onClick={clear}>Clear</button>
+          <button className="button" data-cy="lineButton" onClick={() => setDrawingShape('line')}>Line</button>
+        </div>
       </div>
     </React.Fragment>
   )

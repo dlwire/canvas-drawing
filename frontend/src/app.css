@@ -1,3 +1,16 @@
 .pageDiv {
-    margin-top: 1em;
+    display: inline-block;
+}
+
+.actions {
+    display: flex;
+    align-content: center;
+}
+
+.buttonGroup {
+    margin: auto;
+}
+
+.button:not(:last-child) {
+    margin-right: 1em;
 }
