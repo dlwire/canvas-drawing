@@ -1,8 +1,13 @@
-export type Coordinate = {
-    x: number;
-    y: number;
-  }
+export enum ShapeType {
+  LINE = 'line',
+}
 
-  export type Shape = {
-    coordinates: Coordinate[]
-  }
+export type Coordinate = {
+  x: number;
+  y: number;
+}
+
+export type Shape = {
+  type: ShapeType;
+  coordinates: Coordinate[];
+}

@@ -1,4 +1,4 @@
-import { Coordinate } from './types';
+import { Coordinate, ShapeType } from './types';
 
 export type Drawer = (canvas: HTMLCanvasElement, startPosition: Coordinate, stopPosition: Coordinate) => void;
 
@@ -18,8 +18,8 @@ export function getCanvasLocation(canvas: HTMLCanvasElement, event: MouseEvent):
   return { x: event.pageX - canvas.offsetLeft, y: event.pageY - canvas.offsetTop };
 }
 
-export const DRAWERS: Record<string, Drawer> = {
-  'line': (canvas: HTMLCanvasElement, startPosition: Coordinate, stopPosition: Coordinate) => {
+export const DRAWERS: Record<ShapeType, Drawer> = {
+  [ShapeType.LINE]: (canvas: HTMLCanvasElement, startPosition: Coordinate, stopPosition: Coordinate) => {
     const context = canvas.getContext('2d');
 
     if (context) {

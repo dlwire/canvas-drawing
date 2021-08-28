@@ -1,6 +1,6 @@
 import React from 'react';
 import { sendAddShape, sendClear, sendGetShapes } from './api';
-import { Coordinate, Shape } from './types';
+import { Coordinate, Shape, ShapeType } from './types';
 import { DRAWERS, getCanvasLocation, throttle } from './utils';
 
 import './drawingCanvas.css'
@@ -8,7 +8,7 @@ import './drawingCanvas.css'
 function DrawingCanvas() {
   const ref = React.useRef<HTMLCanvasElement>(null);
   const [startPosition, setStartPosition] = React.useState<Coordinate | null>(null);
-  const [drawingShape, setDrawingShape] = React.useState<string>('line');
+  const [drawingShape, setDrawingShape] = React.useState<ShapeType>(ShapeType.LINE);
 
   const onClick = React.useCallback((event: MouseEvent) => {
     if (!ref.current) {
@@ -21,7 +21,7 @@ function DrawingCanvas() {
     } else {
       DRAWERS[drawingShape](ref.current, startPosition, clickLocation);
       setStartPosition(null);
-      sendAddShape({ coordinates: [startPosition, clickLocation]});
+      sendAddShape({ type: ShapeType.LINE, coordinates: [startPosition, clickLocation]});
     }
   }, [drawingShape, startPosition]);
 
@@ -45,7 +45,7 @@ function DrawingCanvas() {
     if (canvas) {
       sendGetShapes().then((shapes: Shape[]) => {
         shapes.forEach((shape: Shape) => {
-          DRAWERS['line'](canvas, shape.coordinates[0], shape.coordinates[1]);
+          DRAWERS[shape.type](canvas, shape.coordinates[0], shape.coordinates[1]);
         });
       });
     }
@@ -74,7 +74,7 @@ function DrawingCanvas() {
       <div className="actions">
         <div className="buttonGroup">
           <button className="button" data-cy="clearButton" onClick={clear}>Clear</button>
-          <button className="button" data-cy="lineButton" onClick={() => setDrawingShape('line')}>Line</button>
+          <button className="button" data-cy="lineButton" onClick={() => setDrawingShape(ShapeType.LINE)}>Line</button>
         </div>
       </div>
     </React.Fragment>
