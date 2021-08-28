@@ -1,5 +1,5 @@
 install:
-	pip install -r requirements.txt
+	npm install
 
 run:
-	python api.py
+	npm start

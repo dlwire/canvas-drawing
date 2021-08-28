@@ -45,7 +45,6 @@ function DrawingCanvas() {
     if (canvas) {
       sendGetShapes().then((shapes: Shape[]) => {
         shapes.forEach((shape: Shape) => {
-          console.log(shape);
           DRAWERS[shape.type](canvas, shape.coordinates[0], shape.coordinates[1]);
         });
       });

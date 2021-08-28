@@ -26,8 +26,10 @@ export function sendAddShape(shape: Shape): Promise<void> {
     'http://localhost:5000/add-shape',
     {
       method: "POST",
-      mode: 'no-cors',
-      body: JSON.stringify(shape)
+      body: JSON.stringify(shape),
+      headers: {
+        'Content-Type': 'application/json',
+      }
     }
   ).then(() => {})
   .catch(error => console.error(error));
