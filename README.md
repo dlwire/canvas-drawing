@@ -24,6 +24,8 @@ To run the frontend:
 cd frontend && nake install && make run;
 ```
 
+To access the drawing app navigate to http://localhost:3000.
+
 Running the tests
 ---
 To run the e2e tests, the frontend and backend must already be running, then:
