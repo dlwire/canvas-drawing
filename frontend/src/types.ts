@@ -1,5 +1,6 @@
 export enum ShapeType {
   LINE = 'line',
+  RECTANGLE = 'rectangle',
 }
 
 export type Coordinate = {

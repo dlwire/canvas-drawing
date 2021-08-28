@@ -59,4 +59,36 @@ describe('Drawing on the canvas', () => {
     cy.get('[data-cy=theCanvas]')
       .matchImageSnapshot('drew_a_line');
   });
+
+  it('should allow switching drawing types', () => {
+    cy.get('[data-cy=rectangleButton]')
+      .click()
+      .snapshot('rectangle selected');
+
+    cy.get('[data-cy=lineButton]')
+      .click()
+      .snapshot('line selected');
+  });
+
+  it('should draw rectangles and lines', () => {
+    cy.get('[data-cy=rectangleButton]')
+      .click();
+
+    cy.get('[data-cy=theCanvas]')
+      .click(80, 60)
+      .click(720, 540);
+
+    cy.get('[data-cy=lineButton]')
+      .click();
+
+    cy.get('[data-cy=theCanvas]')
+      .click(0, 0)
+      .click(800, 600)
+      .matchImageSnapshot('rectangle_and_line');
+
+    cy.reload();
+
+    cy.get('[data-cy=theCanvas]')
+      .matchImageSnapshot('rectangle_and_line');
+  });
 });

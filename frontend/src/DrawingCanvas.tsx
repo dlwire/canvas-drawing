@@ -21,7 +21,7 @@ function DrawingCanvas() {
     } else {
       DRAWERS[drawingShape](ref.current, startPosition, clickLocation);
       setStartPosition(null);
-      sendAddShape({ type: ShapeType.LINE, coordinates: [startPosition, clickLocation]});
+      sendAddShape({ type: drawingShape, coordinates: [startPosition, clickLocation]});
     }
   }, [drawingShape, startPosition]);
 
@@ -45,6 +45,7 @@ function DrawingCanvas() {
     if (canvas) {
       sendGetShapes().then((shapes: Shape[]) => {
         shapes.forEach((shape: Shape) => {
+          console.log(shape);
           DRAWERS[shape.type](canvas, shape.coordinates[0], shape.coordinates[1]);
         });
       });
@@ -74,7 +75,8 @@ function DrawingCanvas() {
       <div className="actions">
         <div className="buttonGroup">
           <button className="button" data-cy="clearButton" onClick={clear}>Clear</button>
-          <button className="button" data-cy="lineButton" onClick={() => setDrawingShape(ShapeType.LINE)}>Line</button>
+          <button className={drawingShape === ShapeType.LINE ? "button selected" : "button"} data-cy="lineButton" onClick={() => setDrawingShape(ShapeType.LINE)}>Line</button>
+          <button className={drawingShape === ShapeType.RECTANGLE ? "button selected" : "button"} data-cy="rectangleButton" onClick={() => setDrawingShape(ShapeType.RECTANGLE)}>Rectangle</button>
         </div>
       </div>
     </React.Fragment>

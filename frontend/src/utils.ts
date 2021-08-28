@@ -30,5 +30,20 @@ export const DRAWERS: Record<ShapeType, Drawer> = {
 
       context.stroke();
     }
+  },
+  [ShapeType.RECTANGLE]: (canvas: HTMLCanvasElement, startPosition: Coordinate, stopPosition: Coordinate) => {
+    const context = canvas.getContext('2d');
+
+    if (context) {
+      context.beginPath();
+      context.moveTo(startPosition.x, startPosition.y);
+      context.lineTo(startPosition.x, stopPosition.y);
+      context.lineTo(stopPosition.x, stopPosition.y);
+      context.lineTo(stopPosition.x, startPosition.y);
+      context.lineTo(startPosition.x, startPosition.y);
+      context.closePath();
+
+      context.stroke();
+    }
   }
 }
